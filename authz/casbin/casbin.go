@@ -4,14 +4,14 @@ import (
 	"context"
 	"time"
 
-	casbinV2 "github.com/casbin/casbin/v2"
-	"github.com/casbin/casbin/v2/model"
-	"github.com/casbin/casbin/v2/persist"
+	casbinV3 "github.com/casbin/casbin/v3"
+	"github.com/casbin/casbin/v3/model"
+	"github.com/casbin/casbin/v3/persist"
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/middleware"
 
-	"github.com/tx7do/kratos-casbin/authz"
+	"github.com/swordkee/kratos-casbin/authz"
 )
 
 type contextKey string
@@ -59,7 +59,7 @@ type options struct {
 	model                  model.Model
 	policy                 persist.Adapter
 	watcher                persist.Watcher
-	enforcer               *casbinV2.SyncedEnforcer
+	enforcer               *casbinV3.SyncedEnforcer
 }
 
 // WithDomainSupport  enable domain support
@@ -119,7 +119,7 @@ func Server(opts ...Option) middleware.Middleware {
 		o.model, _ = loadRbacModel()
 	}
 
-	o.enforcer, _ = casbinV2.NewSyncedEnforcer(o.model, o.policy)
+	o.enforcer, _ = casbinV3.NewSyncedEnforcer(o.model, o.policy)
 	if o.enforcer != nil && o.watcher != nil {
 		_ = o.watcher.SetUpdateCallback(func(s string) {
 			_ = o.enforcer.LoadPolicy()
@@ -180,7 +180,7 @@ func Client(opts ...Option) middleware.Middleware {
 		o.model, _ = loadRbacModel()
 	}
 
-	o.enforcer, _ = casbinV2.NewSyncedEnforcer(o.model, o.policy)
+	o.enforcer, _ = casbinV3.NewSyncedEnforcer(o.model, o.policy)
 
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req interface{}) (interface{}, error) {

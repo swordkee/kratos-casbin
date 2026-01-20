@@ -10,10 +10,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/casbin/casbin/v2"
-	"github.com/casbin/casbin/v2/model"
-	"github.com/casbin/casbin/v2/persist"
-	fileAdapter "github.com/casbin/casbin/v2/persist/file-adapter"
+	"github.com/casbin/casbin/v3"
+	"github.com/casbin/casbin/v3/model"
+	"github.com/casbin/casbin/v3/persist"
+	fileAdapter "github.com/casbin/casbin/v3/persist/file-adapter"
 
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
@@ -21,7 +21,7 @@ import (
 
 	jwtV5 "github.com/golang-jwt/jwt/v5"
 
-	"github.com/tx7do/kratos-casbin/authz"
+	"github.com/swordkee/kratos-casbin/authz"
 )
 
 const (
@@ -203,7 +203,7 @@ func createCasbin(mc, pc string) *casbin.Enforcer {
 	if err != nil {
 		panic(err)
 	}
-	e.EnableLog(false)
+	//e.EnableLog(false)
 	return e
 }
 
@@ -229,7 +229,7 @@ func TestCasbin(t *testing.T) {
 	}
 
 	enforcer.EnableEnforce(true)
-	enforcer.EnableLog(true)
+	//enforcer.EnableLog(true)
 	enforcer.EnableAutoBuildRoleLinks(true)
 
 	{
@@ -267,7 +267,7 @@ func TestCasbin1(t *testing.T) {
 		panic(err)
 	}
 	enforcer.EnableEnforce(true)
-	enforcer.EnableLog(true)
+	//enforcer.EnableLog(true)
 
 	{
 		allowed, err := enforcer.Enforce("cathy", "/dataset1/item", "*")
